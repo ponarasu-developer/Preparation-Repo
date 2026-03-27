@@ -1,0 +1,224 @@
+class BlogPost {
+
+    String title;
+    String content;
+
+    public void createPost() {
+        // create post logic
+    }
+
+    public void formatPost() {
+        // HTML formatting logic
+    }
+
+    public void publishPost() {
+        // publish to platform
+    }
+
+    public void saveToDatabase() {
+        // DB logic
+    }
+
+    public void sendNotification() {
+        // notify subscribers
+    }
+}
+
+//MY Solution
+
+class BlogContent {
+ String title;
+    String content; 
+}
+class BlogPost {
+   
+    Private BlogContent  BlogContent;
+    private CreationService CreationService;
+     private formattingService formattingService;
+      private PublicationService PublicationService;
+       private EmailNotifcation EmailNotifcation;
+       private DataBaseStorageService  DataBaseStorageService;
+
+       public Void BlogGenration(BlogContent){
+        CreationService.createPost(BlogContent);
+        formattingService.formatPost(BlogContent);
+DataBaseStorageService.Save(BlogContent);
+PublicationService.publishPost(BlogContent);
+EmailNotifcation.Notify(BlogContent);
+       }
+}
+
+
+
+class CreationService {
+    public void createPost(BlogPost Blog) {
+        // create post logic
+    }
+
+}
+
+class formattingService {
+
+    public void formatPost(BlogPost Blog) {
+        // HTML formatting logic
+    }
+}
+
+class PublicationService {
+     public void publishPost( BlogPost Blog ) {
+        // publish to platform
+    }
+}
+
+
+class EmailNotifcation extends NotificationService {
+
+ public void Notify(User){
+///
+ }
+
+}
+
+class NotificationService {
+
+ public void Notify(User){
+///
+ }
+
+}
+class DataBaseStorageService extends StorageService {
+    @override 
+   public void  Save(Data){
+        //DB storage logic
+    }
+}
+
+class StorageService{
+
+    public void Save (Data){
+
+    };
+}
+
+//////////////////////////////
+BETTER Solution
+class BlogPost {
+    String title;
+    String content;
+}
+
+class CreationService {
+    public void create(BlogPost post) { }
+}
+
+class FormattingService {
+    public void format(BlogPost post) { }
+}
+
+class PublicationService {
+    public void publish(BlogPost post) { }
+}
+
+class NotificationService {
+    public void notify(BlogPost post) { }
+}
+
+class StorageService {
+    public void save(BlogPost post) { }
+}
+
+class BlogPostService {
+    private CreationService creationService;
+    private FormattingService formattingService;
+    private PublicationService publicationService;
+    private NotificationService notificationService;
+    private StorageService storageService;
+
+    public void createAndPublish(BlogPost post) {
+        creationService.create(post);
+        formattingService.format(post);
+        storageService.save(post);
+        publicationService.publish(post);
+        notificationService.notify(post);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+////////////////////////////////
+🎯 Your Task
+Step 1 — Identify Responsibilities
+
+List all responsibilities inside this class.
+
+Step 2 — Refactor using SRP
+
+Break it into:
+
+Proper classes
+Proper naming
+Clear separation
+Step 3 — Add Orchestrator
+
+Create a class that:
+
+Coordinates everything
+Maintains flow
+⚠️ Constraints (Important)
+Keep BlogPost as the core entity
+Do NOT mix responsibilities again
+Avoid duplicate responsibilities
+Use meaningful names (interview matters)
+💡 Hint (Don’t skip thinking)
+
+You should end up with something like:
+
+BlogPost (entity)
+PostFormatter
+PostRepository
+NotificationService
+PublishingService
+1 orchestrator

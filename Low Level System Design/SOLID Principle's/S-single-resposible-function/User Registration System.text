@@ -1,0 +1,131 @@
+New Exercise (Interview-style)
+
+Design:
+
+"User Registration System"
+
+Requirements:
+
+Validate user
+Save user
+Send welcome email
+Log activity
+Your task:
+Apply SRP properly
+Include:
+Entities
+Services
+Orchestrator
+
+
+Class Resgistration {
+Private StorageService store;
+Private ValidationService Validate;
+Private NotificationService Notify;
+Private LogService Log;
+
+
+public void EnrollUser (User Userdetail) {
+
+store.SavetoDB(Userdetail);
+validate.ValidateUserDetail(Userdetail);
+Notify.SendWelcomeMessage(Userdetail);
+Log.LogNewUserDetail(Userdetail);
+}
+}
+
+
+Class StorageService {
+
+    private void SavetoDB (User user){
+//save user logic DB
+    }
+}
+
+Class ValidationService {
+
+    private void ValidateUserDetail (User user){
+
+    }
+}
+
+class NotificationService {
+
+private void SendWelcomeMessage ( User user){
+
+}
+}
+
+
+class LogService {
+    private void LogNewUserDetail( User user){
+
+    }
+}
+
+//////////////////////////
+❌ Issues (Important Fixes)
+1. 🚨 Wrong Execution Order
+store.SavetoDB(Userdetail);
+validate.ValidateUserDetail(Userdetail);
+❌ Problem
+
+You are:
+
+Saving BEFORE validating
+
+This breaks business correctness.
+
+2. 🚨 Access Modifiers Are Wrong
+
+All your methods are:
+
+private void ...
+❌ Problem
+These services are never callable from outside
+Your Registration class cannot use them
+.// Naming issues
+4. ⚠️ Missing Domain Entity
+
+You used User but didn’t define it.
+
+👉 In interviews, always include at least:
+
+class User {
+    String name;
+    String email;
+}
+
+5. ⚠️ Responsibility Leakage Risk
+
+Your services are good, but think deeper:
+
+Example:
+class NotificationService {
+    void sendWelcome(User user)
+}
+
+👉 What if tomorrow:
+
+SMS added
+Push notifications added
+
+This class may grow → SRP risk
+
+
+
+
+CLEAN version
+class UserRegistrationService {
+    private StorageService storageService;
+    private ValidationService validationService;
+    private NotificationService notificationService;
+    private LogService logService;
+
+    public void registerUser(User user) {
+        validationService.validate(user);
+        storageService.save(user);
+        notificationService.sendWelcome(user);
+        logService.log(user);
+    }
+}

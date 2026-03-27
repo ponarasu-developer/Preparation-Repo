@@ -1,0 +1,57 @@
+class Invoice {
+    private List<Item> items;
+
+    public double calculateTotal() {
+        // calculate total
+    }
+
+    public void printInvoice() {
+        // print logic
+    }
+
+    public void saveToDB() {
+        // DB logic
+    }
+}
+👉 Task
+Identify responsibilities
+Refactor into SRP-compliant design
+Name the new classes properly
+
+responsibilities - Total calculation , print bill , save that to DB
+
+class calculateTotal {
+      public double calculateTotal() {
+        // calculate total
+    }
+
+}
+
+class Print{
+      public void printInvoice() {
+        // print logic
+    }
+}
+
+class StoreDate {
+     public void saveToDB() {
+        // DB logic
+    }
+}
+
+Better version 
+class Invoice {
+    private List<Item> items;
+
+    public double calculateTotal() {
+        // core business logic
+    }
+}
+
+class InvoicePrinter {
+    public void print(Invoice invoice) { }
+}
+
+class InvoiceRepository {
+    public void save(Invoice invoice) { }
+}

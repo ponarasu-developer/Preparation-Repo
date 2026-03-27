@@ -1,0 +1,31 @@
+class OrderService {
+
+    public void placeOrder(Order order) {
+        validate(order);
+        save(order);
+        sendConfirmation(order);
+        generateInvoice(order);
+    }
+
+    private void validate(Order order) { }
+    private void save(Order order) { }
+    private void sendConfirmation(Order order) { }
+    private void generateInvoice(Order order) { }
+}
+
+/////////////////////
+class OrderConfirmation {
+    private void sendConfirmation(Order order) { }
+}
+
+class InvoiceGenerator {
+     private void generateInvoice(Order order) { }
+}
+
+class InvoiceRepository {
+     private void save(Order order) { }
+}
+
+class ValidateOrder {
+     private void validate(Order order) { }
+}

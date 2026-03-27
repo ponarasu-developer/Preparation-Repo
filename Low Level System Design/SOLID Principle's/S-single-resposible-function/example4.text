@@ -1,0 +1,95 @@
+class PaymentProcessor {
+
+    public void processPayment(Payment payment) {
+        if (payment.type.equals("CARD")) {
+            // card logic
+        } else if (payment.type.equals("UPI")) {
+            // UPI logic
+        }
+
+        // save to DB
+        // send notification
+        // generate receipt
+    }
+}
+
+👉 Task
+Identify SRP violations
+Refactor design
+Make it extensible for new payment types    
+💡 Expected Direction
+
+You should think about:
+
+Payment strategy classes
+Repository layer
+Notification service
+Receipt generator
+
+///////////////////////
+VIoloation --- it can be access by two or more actors ,and adding new payment method is leads to edit this base class
+propsed version
+
+
+class cardPayment Extends PaymentProcessor {
+ 
+  public void processPayment(Payment payment) {
+        // card logic 
+        // save to DB
+        // send notification
+        // generate receipt
+    }
+
+}
+
+class UPIPayment Extends PaymentProcessor {
+@override
+  public void processPayment(Payment payment) {
+        // UPI logic 
+        // save to DB
+        // send notification
+        // generate receipt
+    }
+
+}
+
+better version
+
+interface PaymentStrategy {
+    void pay(Payment payment);
+}
+
+class CardPayment implements PaymentStrategy {
+    public void pay(Payment payment) { }
+}
+
+class UPIPayment implements PaymentStrategy {
+    public void pay(Payment payment) { }
+}
+
+class PaymentRepository {
+    void save(Payment payment) { }
+}
+
+class NotificationService {
+    void notifyUser(Payment payment) { }
+}
+
+class ReceiptService {
+    void generateReceipt(Payment payment) { }
+}
+
+
+class PaymentService {
+    private PaymentStrategy strategy;
+    private PaymentRepository repository;
+    private NotificationService notificationService;
+    private ReceiptService receiptService;
+
+    public void process(Payment payment) {
+        strategy.pay(payment);
+        repository.save(payment);
+        notificationService.notifyUser(payment);
+        receiptService.generateReceipt(payment);
+    }
+} 

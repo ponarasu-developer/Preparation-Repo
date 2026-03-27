@@ -1,0 +1,81 @@
+👉 Design:
+
+“Online Quiz System”
+
+Requirements:
+
+Create quiz
+Evaluate answers
+Calculate score
+Save results
+Show result (formatting)
+
+
+
+CLEAN CODE LLLD 
+
+class Question {
+    String question;
+    List<String> options;
+    String correctAnswer;
+}
+
+class Quiz {
+    List<Question> questions;
+}
+
+class UserResponse {
+    Question question;
+    String selectedAnswer;
+}
+
+class Result {
+    int score;
+}
+
+
+class QuizService {
+    private QuizCreationService creationService;
+    private EvaluationService evaluationService;
+    private CalculationService calculationService;
+    private ResultRepository repository;
+    private ResultFormatter formatter;
+
+    public void conductQuiz(List<Question> questions, List<UserResponse> responses) {
+        Quiz quiz = creationService.createQuiz(questions);
+
+        List<Boolean> evaluation = evaluationService.evaluate(responses);
+
+        Result result = calculationService.calculateScore(evaluation);
+
+        repository.save(result);
+
+        formatter.format(result);
+    }
+}
+
+class QuizCreationService {
+    public Quiz createQuiz(List<Question> questions) {
+        return new Quiz(questions);
+    }
+}
+
+class EvaluationService {
+    public List<Boolean> evaluate(List<UserResponse> responses) {
+        // compare answers
+    }
+}
+
+class CalculationService {
+    public Result calculateScore(List<Boolean> evaluation) {
+        // compute score
+    }
+}
+
+class ResultRepository {
+    public void save(Result result) { }
+}
+
+class ResultFormatter {
+    public void format(Result result) { }
+}

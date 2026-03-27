@@ -1,0 +1,46 @@
+class User {
+    String name;
+    String email;
+
+    public void saveToDatabase() {
+        // DB logic
+    }
+
+    public void sendEmail() {
+        // Email logic
+    }
+}
+Task
+Identify how many responsibilities this class has
+Split into proper classes
+ 
+ Solution - It has two responsibilities
+
+ class SendEMail{
+    String EMail;
+
+      public void sendEmail() {
+        // Email logic
+    }
+ }
+
+ class Save {
+      public void saveToDatabase() {
+        // DB logic
+    }
+ }
+
+
+ correct version 
+ class User {
+    String name;
+    String email;
+}
+
+class UserRepository {
+    public void save(User user) { }
+}
+
+class EmailService {
+    public void sendEmail(User user) { }
+}
