@@ -1,0 +1,64 @@
+“Discount System” (OCP)
+
+Requirements:
+
+Different discount types:
+New User
+Festival
+Premium User
+Apply discount to amount
+
+
+interface discount{
+    void applyDiscount (double presentage);
+}
+
+class NewUserDiscount implements discount {
+    void applyDiscount (double presentage){
+        /// new user discount logic
+    }
+}
+
+class FestivalDiscount implements discount {
+    void applyDiscount ( double presentage){
+        /// Festival discount logic
+    }
+}
+
+class PremiumUserDiscount implements discount {
+    void applyDiscount ( double presentage){
+        /// Premium User discount logic
+    }
+}
+
+class DiscountService{
+    public void applyDiscount(discount Discount double presentage ){
+        Discount.applyDiscount(presentage);
+    }
+}
+❌ Issues to Fix (Important)
+1. 🚨 Method Design is Wrong
+void applyDiscount(double presentage);
+❌ Problem
+Discount should be applied on amount, not percentage
+Percentage should be internal to each strategy
+
+FIX - double apply(double amount);
+
+2. 🚨 Responsibility Confusion
+
+Right now:
+
+Caller decides percentage ❌
+
+👉 That breaks encapsulation
+
+✅ Correct Idea
+
+Each class should decide its own logic:
+
+class NewUserDiscount implements Discount {
+    public double apply(double amount) {
+        return amount * 0.8;
+    }
+}

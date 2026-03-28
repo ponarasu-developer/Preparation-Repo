@@ -1,0 +1,55 @@
+BAD CODE 
+
+class NotificationService {
+
+    public void send(String type) {
+        if (type.equals("EMAIL")) {
+            // email
+        } else if (type.equals("SMS")) {
+            // sms
+        }
+    }
+}
+
+MY Solution
+
+interface Notify {
+    void send();
+}
+
+class EmailNotification implements Notify{
+    public void send(){
+
+    }
+}
+
+class SmsNotification implements Notify{
+    public void send(){
+        
+    }
+}
+
+
+class NotificationService {
+
+    public void send(String type) {
+       type.send();
+       ❌ Problems
+type is a String, not an object
+You’re still thinking in old if-else mindset
+This will NOT compile
+    }
+}
+🔑 Insight
+
+Don’t pass "type" → pass "behavior"
+
+correct Code 
+
+
+class NotificationService {
+
+    public void send(Notify notification) {
+        notification.send();
+    }
+}

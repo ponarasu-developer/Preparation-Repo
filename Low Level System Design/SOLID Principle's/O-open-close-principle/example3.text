@@ -1,0 +1,249 @@
+Now you’re ready for:
+
+👉 SRP + OCP combined problem
+
+Try:
+
+“Food Order System”
+
+Requirements:
+
+Create order
+Calculate total
+Apply discount (OCP)
+Save order (SRP)
+Send notification (SRP)
+
+
+class OrderService {
+Private CreateorderService  Createorder;
+Private TotalCalculationService TotalCalculationService;
+Private DiscountService  DiscountService;
+private RepositoryService RepositoryService;
+Private EmailNotification notificationService;
+
+
+public void Createorder(Item item,String user,Discount NewUserDiscount){
+MenuItems Items = CreateorderService.createOrder(item);
+double totalBill = TotalCalculationService.totalAmount(Items);
+double totalDiscount = DiscountService.applyDiscount(NewUserDiscount,totalBill);
+RepositoryService.save();
+notificationService.Notify(user)
+
+}
+
+}
+
+class Item{
+    string Name;
+    double amount;
+    double quantity;
+}
+
+class MenuItems {
+    List<Item> Items;
+}
+class CreateorderService{
+    public createOrder(Item item){
+
+    }
+}
+
+class TotalCalculationService {
+  public totalAmount (MenuItems Items){
+
+    }
+}
+
+interface discount{
+    void applyDiscount (double amount);
+}
+
+
+class NewUserDiscount implements discount {
+    void applyDiscount (double amount){
+        /// new user discount logic
+    }
+}
+
+
+class DiscountService{
+     public void applyDiscount(discount Discount , double amount ){
+        Discount.applyDiscount(amount);
+    }
+}
+
+class NotificationService {
+    public void Notify(String User){
+
+    }
+}
+
+class EmailNotification extends NotificationService{
+      public void Notify(String User){
+
+    }
+}
+
+class SMSNotification extends NotificationService{
+      public void Notify(String User){
+
+    }
+}
+
+class RepositoryService {
+    public void Save(Data OrderData){
+
+    }
+}
+
+
+class DataBaseStorageService extends RepositoryService {
+       public void Save(Data OrderData){
+
+    }
+}
+
+
+❌ Critical Issues (Must Fix)
+1. 🚨 Method Flow & Data Passing is Broken
+Createorder(Item item,String user,Discount NewUserDiscount)
+❌ Problems
+Only one item (real systems have multiple items)
+No return values from services
+Repository save has no data
+Notification has no context
+✅ Fix (Correct flow)
+List<Item> → Order → total → discount → save → notify
+2. 🚨 Discount Interface is Wrong
+void applyDiscount(double amount);
+❌ Problem
+No return value → discount result lost
+✅ Fix
+interface Discount {
+    double apply(double amount);
+}
+3. 🚨 DiscountService is Redundant
+DiscountService.applyDiscount(...)
+
+👉 This is unnecessary abstraction
+
+✅ Better
+
+Call directly:
+
+double finalAmount = discount.apply(total);
+4. 🚨 Naming + Syntax Issues
+
+Examples:
+
+CreateorderService ❌ → OrderCreationService
+string Name ❌ → String name
+Notify ❌ → notify
+discount ❌ → Discount
+Private ❌ → private
+
+👉 These matter a LOT in interviews
+
+5. 🚨 Missing Core Entity: Order
+
+You skipped the main domain object.
+
+✅ Add:
+class Order {
+    List<Item> items;
+    double totalAmount;
+}
+6. 🚨 Notification Design (OCP Misused Slightly)
+private EmailNotification notificationService;
+
+👉 This locks you to email → violates OCP
+✅ Fix
+private NotificationService notificationService;
+7. 🚨 Repository Design Incomplete
+RepositoryService.save();
+
+👉 Missing:
+
+What are you saving?
+No Order object
+
+
+GOOD CODE
+class Item {
+    String name;
+    double price;
+    int quantity;
+}
+
+class Order {
+    List<Item> items;
+    double totalAmount;
+
+    public Order(List<Item> items) {
+        this.items = items;
+    }
+}
+
+class OrderCreationService {
+    public Order create(List<Item> items) {
+        return new Order(items);
+    }
+}
+class OrderCreationService {
+    public Order create(List<Item> items) {
+        return new Order(items);
+    }
+}
+
+class TotalCalculationService {
+    public double calculate(Order order) {
+        double total = 0;
+        for (Item item : order.items) {
+            total += item.price * item.quantity;
+        }
+        return total;
+    }
+}
+interface Discount {
+    double apply(double amount);
+}
+
+class NewUserDiscount implements Discount {
+    public double apply(double amount) {
+        return amount * 0.8;
+    }
+}
+
+interface NotificationService {
+    void notify(String user, Order order);
+}
+
+interface NotificationService {
+    void notify(String user, Order order);
+}
+
+class EmailNotification implements NotificationService {
+    public void notify(String user, Order order) { }
+}
+
+class OrderService {
+    private OrderCreationService creationService;
+    private TotalCalculationService calculationService;
+    private OrderRepository repository;
+    private NotificationService notificationService;
+
+    public void placeOrder(List<Item> items, String user, Discount discount) {
+
+        Order order = creationService.create(items);
+
+        double total = calculationService.calculate(order);
+
+        double finalAmount = discount.apply(total);
+        order.totalAmount = finalAmount;
+
+        repository.save(order);
+
+        notificationService.notify(user, order);
+    }
+}

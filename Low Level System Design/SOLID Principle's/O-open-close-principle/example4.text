@@ -1,0 +1,26 @@
+🚗 LLD Problem — Parking Lot System
+
+This is a classic interview question. Don’t rush—focus on clean thinking (SRP + OCP).
+
+🧾 Requirements
+
+Design a Parking Lot System with:
+
+Core Features:
+Vehicles enter the parking lot
+Allocate parking slot
+Vehicles exit the parking lot
+Calculate parking fee
+Vehicle Types:
+Bike
+Car
+Truck
+Parking Slots:
+Different slot sizes:
+Small
+Medium
+Large
+Rules:
+Bike → Small slot
+Car → Medium slot
+Truck → Large slot
