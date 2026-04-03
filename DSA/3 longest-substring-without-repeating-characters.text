@@ -1,0 +1,32 @@
+longest-substring-without-repeating-characters
+
+
+// Pattern  : Sliding window variable size
+// Time     : O(n)
+// Space    : O(n)
+// Insight  : right always expands, left shrinks only when
+//            condition is violated
+
+
+
+Given a string s, find the length of the longest substring without duplicate characters.
+
+
+var lengthOfLongestSubstring = function (s) {
+
+    let maxLength = 0;
+    let uniqueElement = new Set();
+    for (let l = 0, r = 0; r <= s.length - 1;) {
+        if (!uniqueElement.has(s[r])) {
+            uniqueElement.add(s[r]);
+            maxLength = Math.max(maxLength, r - l + 1)
+            r++;
+        } else {
+            uniqueElement.delete(s[l]);
+            l++;
+        }
+    }
+
+    return maxLength;
+
+};

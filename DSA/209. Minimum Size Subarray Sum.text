@@ -1,0 +1,29 @@
+209. Minimum Size Subarray Sum
+
+
+// Pattern  : Sliding window variable size
+// Time     : O(n)
+// Space    : O(n)
+// Insight  : right always expands, left shrinks only when
+//            condition is violated
+
+
+Given an array of positive integers nums and a positive integer target, return the minimal length of a subarray whose 
+sum is greater than or equal to target. If there is no such subarray, return 0 instead.
+
+var minSubArrayLen = function (target, nums) {
+     let l = 0;
+    let sum = 0;
+    let minLen = Infinity; 
+    for (let r = 0; r < nums.length; r++) {
+        sum += nums[r];
+
+        while (sum >= target) {
+            minLen = Math.min(minLen, r - l + 1); // record before shrinking
+            sum -= nums[l]; // remove left element first
+            l++;            // then move left pointer
+        }
+    }
+
+    return minLen === Infinity ? 0 : minLen;
+};
