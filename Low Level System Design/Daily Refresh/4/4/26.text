@@ -1,0 +1,39 @@
+1. A class ApiManager handles HTTP calls, parses JSON,
+   saves to DB, and logs errors. Which SOLID principle?
+
+2. FlyingVehicle base class has fly(). Car extends it.
+   Which SOLID principle breaks and why?
+
+3. Your BLoC directly creates FirebaseRepository inside
+   its constructor. Which principle does this violate?
+   How do you fix it in one line?
+
+
+Question 1 — Wrong principle
+ApiManager handling HTTP calls, JSON parsing, DB saving, and logging is not ISP.
+
+ISP is about interfaces having too many methods that implementers don't need. This is about one class doing too many jobs.
+The correct answer is Single Responsibility Principle (SRP) — one class should have only one reason to change. ApiManager has four reasons to change.
+
+
+Question 2 — Wrong principle, wrong name
+"Dependency injection principle" is not one of the SOLID principles. DI is a technique, not a principle.
+A Car extending FlyingVehicle and inheriting fly() breaks Liskov Substitution Principle (LSP) 
+— a subclass should be usable wherever its parent is used without breaking behaviour.
+ A Car can't fly, so substituting Car for FlyingVehicle breaks the contract.
+
+ Question 3 — Closest but still wrong name
+Again "dependency injection principle" doesn't exist in SOLID. You're thinking of Dependency Inversion Principle 
+
+(DIP) — high level modules should depend on abstractions, not concrete implementations.
+// Instead of this inside BLoC:
+final db = FirebaseRepository(); // concrete, tightly coupled
+
+// Accept abstraction via constructor:
+MyBloc(this.repository); // repository is an abstract type, injected from outside
+
+Single Responsibility  - one class one Responsibility
+Open/Closed   - Extend but not modify
+Liskov Substitution - Subclass must honour parent's contract
+Interface Segregation -- Don't force unused methods on a class
+Dependency Inversion  -- Depend on abstractions not concretions
