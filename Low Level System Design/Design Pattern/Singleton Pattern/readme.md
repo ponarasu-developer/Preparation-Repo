@@ -4,6 +4,9 @@ So 2 constraints:
 Singleton requires shared state
 
 
+Singleton works for global, shared, consistent state
+NOT for scoped, user-specific, or isolated data
+
 ❌ No multiple objects
 ✅ One global access point
 
@@ -125,3 +128,70 @@ export const cache = {
 };
 
 This is a module-based Singleton object because it maintains shared mutable state and is reused across the application due to module caching.
+
+
+Question - 3 
+
+What if multiple users log in simultaneously?
+
+“Singleton is not suitable for multi-user session handling. It’s better for global app-level state, not per-user state.”
+
+Question - 4
+Should Cache Manager be Singleton?  When would it NOT be Singleton?
+
+
+1. When Cache SHOULD be Singleton ✅
+
+Use Singleton when:
+
+Cache is global
+Data is shared across app
+Example:
+API response cache
+Config cache
+Feature flags
+
+👉 Reason:
+
+Single source of truth + avoids duplication
+
+
+2. When Cache SHOULD NOT be Singleton ❌
+
+Your point about multiple users is correct, but let’s make it precise:
+
+❌ Case 1: Per-User Data
+
+If cache stores:
+
+user-specific data
+session tokens
+personalized content
+
+👉 Singleton becomes dangerous
+
+
+Case 2: Multi-tenant Systems
+
+If system supports:
+
+multiple accounts
+multiple environments
+
+👉 You need:
+
+scoped cache, not global cache
+
+❌ Case 3: Testing / Isolation
+
+Singleton:
+
+Hard to reset
+Hard to mock
+
+👉 In tests → causes flaky behavior
+
+
+Better Answer 
+
+Cache Manager can be implemented as a Singleton when the cached data is global and shared across the application. However, if the cache needs to store user-specific or scoped data, Singleton is not suitable because it can lead to data overwriting and lack of isolation
